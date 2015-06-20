@@ -12,8 +12,7 @@ import logging
 
 class Log(object):
 
-    """SysbenchLog info class
-    """
+    """SysbenchLog info class"""
     def __init__(self):
         """Init log format"""
         self.formatter = logging.Formatter('%(levelname)s %(asctime)s %(message)s')
