@@ -6,6 +6,7 @@ Created on 2015-06-20
 import os
 import argparse
 import textwrap
+import ConfigParser
 
 from Logs import logger
 log = logger.Log()
@@ -68,9 +69,14 @@ class CommonActions(object):
         except Exception as e:
             log.error(e)
 
+    @classmethod
+    def ca_parse_config_params(cls, cfg_file):
+        try:
+            config = ConfigParser.RawConfigParser()
+            config.read(cfg_file)
             
-            
-    
+        except Exception as e:
+            log.error(e)
     
     
     
