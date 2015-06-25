@@ -4,14 +4,18 @@ Created on 2015-06-20
 @author: mizhon
 '''
 import os
+import re
+import time
+import shlex
 import argparse
 import textwrap
+import subprocess
 import ConfigParser
+from subprocess import PIPE
 
 from Utility import util
 
 from Logs import logger
-from __builtin__ import None
 log = logger.Log()
 
 
@@ -146,6 +150,61 @@ class CommonActions(object):
             
         except Exception as e:
             log.error(e)
+    
+    @classmethod
+    def ca_exec_cmds(cls, cmd_str):
+        cmd = shlex.split(cmd_str)
+        p = subprocess.Popen(cmd, bufsize=-1, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        p.wait()
+        
+        time.sleep(util.SLEEP_TIME) # sleep 300 seconds between each execution
+        
+        res = p.communicate()
+        cmd_result = []
+        for cmd_line in res:
+            cmd_result.append(cmd_line)
+            
+        return ''.join(cmd_result)
+        
+    @classmethod
+    def __coma_combine_cmds(cls, *params):
+        try:
+            flag = " "
+            param_list = []
+            
+            for param in params:
+                param_list.append(param)
+                
+            return flag.join(param_list)
+        except Exception as e:
+            log.error(e)
+            
+    @classmethod
+    def __coma_get_mysql_version(cls):
+        str_chk_mysql_ver = CommonActions.__coma_combine_cmds(util.DB_MYSQL,
+                                                          "".join(["-h", CommonActions.tool]),
+                                                          "".join(["-u", CommonActions.user]),
+                                                          "".join(["-p", CommonActions.password]),
+                                                          "-e",
+                                                          "\"select version()\"")
+        mysql_ver = shlex.split(str_chk_mysql_ver)
+        
+        p = subprocess.Popen(mysql_ver, bufsize=-1, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        p.wait()
+        
+        mysql_ver_info = p.communicate()
+        mysql_version = ''.join(re.findall(r"\d\.\d\.\d+-\w+", mysql_ver_info[0], re.M))
+        
+        return mysql_version
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
