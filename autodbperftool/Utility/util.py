@@ -20,7 +20,7 @@ DB_ORACLE = "oracle"
 DB_REDIS  = "redis"
 DB_MSSQL  = "mssql" # plan to support this
 
-SLEEP_TIME = 300 # sleep time between each command execution
+SLEEP_TIME = 60 # sleep time between each command execution
 
 """sysbench settings"""
 class SysbenchUtility(object):
