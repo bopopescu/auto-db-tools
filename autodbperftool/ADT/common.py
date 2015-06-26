@@ -21,18 +21,19 @@ log = logger.Log()
 
 class CommonActions(object):
     
-    tool     = None
-    provider = None
+    tool          = None
+    provider      = None
     
     'database info fields'
-    host     = None
-    db       = None
-    port     = None
-    user     = None
+    host          = None
+    db            = None
+    port          = None
+    user          = None
     password      = None
     instance_type = None # indicate whether the instance is RDS or database on VM host
     db_version    = None # database version, e.g.: mysql5.5, mysql5.6 ...
     db_setup      = None # including three types: 1.default; 2.high-safety (slave-master); 3.high-performance;
+    long_stand    = None # indicate whether the test is long-stand testing, default is False 
     
     'sysbench params fields'
     table_engine  = None
@@ -119,14 +120,15 @@ class CommonActions(object):
             
             CommonActions.tool          = config.get("ToolInfo", "tool")
             CommonActions.provider      = config.get("ProviderInfo", "provider")
+            
             CommonActions.db_setup      = config.get("DBInfo", "db_setup")
             CommonActions.instance_type = config.get("DBInfo", "instance_type")
-            
-            CommonActions.host     = config.get("DBInfo", "host")
-            CommonActions.db       = config.get("DBInfo", "db")
-            CommonActions.port     = config.get("DBInfo", "port")
-            CommonActions.user     = config.get("DBInfo", "user")
-            CommonActions.password = config.get("DBInfo", "password")
+        
+            CommonActions.host          = config.get("DBInfo", "host")
+            CommonActions.db            = config.get("DBInfo", "db")
+            CommonActions.port          = config.get("DBInfo", "port")
+            CommonActions.user          = config.get("DBInfo", "user")
+            CommonActions.password      = config.get("DBInfo", "password")
             
             if CommonActions.tool == util.SYSBENCH:               
                 CommonActions.table_engine = config.get("RunInfo", "mysql-table-engine")
