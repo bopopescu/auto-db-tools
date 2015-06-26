@@ -159,7 +159,7 @@ class CommonActions(object):
         p = subprocess.Popen(cmd, bufsize=-1, stdin=PIPE, stdout=PIPE, stderr=PIPE)
         p.wait()
         
-        time.sleep(util.SLEEP_TIME) # sleep 300 seconds between each execution
+        time.sleep(util.SLEEP_TIME) # sleep 60 seconds between each execution
         
         res = p.communicate()
         cmd_result = []
