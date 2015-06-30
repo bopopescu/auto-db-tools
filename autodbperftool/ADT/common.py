@@ -16,6 +16,8 @@ from subprocess import PIPE
 from Utility import util
 
 from Logs import logger
+from ADT.sysbench import SysbenchActions
+from ADT.tpccmysql import TpccmysqlActions
 log = logger.Log()
 
 
@@ -199,7 +201,60 @@ class CommonActions(object):
         
         return mysql_version
     
-    
+    @classmethod
+    def __coma_get_additional_info(cls):
+        try:
+            additional_info = {"provider": None, "test": None, "run_info": {}}
+            
+            additional_info["provider"] = CommonActions.provider
+            additional_info["test"] = CommonActions.tool
+            
+            exec_info_dict = {} # get performance execution parameters.
+            run_time_dict = {} # get performance tool execution duration.
+            
+            exec_info_dict.setdefault("host_name", CommonActions.host)
+            exec_info_dict.setdefault("db_name", CommonActions.db)
+            exec_info_dict.setdefault("port", CommonActions.port)
+            exec_info_dict.setdefault("owner", CommonActions.user)
+            exec_info_dict.setdefault("instance_type", CommonActions.instance_type)
+            exec_info_dict.setdefault("db_version", CommonActions.db_version)
+            exec_info_dict.setdefault("db_setup", CommonActions.db_setup)
+            exec_info_dict.setdefault("long_stand", CommonActions.long_stand)
+            
+            if CommonActions.tool == util.SYSBENCH:
+                exec_info_dict.setdefault("threads", CommonActions.threads)
+                exec_info_dict.setdefault("table_counts", CommonActions.tables_count)
+                exec_info_dict.setdefault("table_size", CommonActions.table_size)
+                exec_info_dict.setdefault("percentile", CommonActions.percentile)
+                
+                run_time_dict.setdefault("metric", "Execution time")
+                run_time_dict.setdefault("value", int(CommonActions.max_time))
+                exec_info_dict.setdefault("unit", "Seconds")
+                
+                exec_info_dict.setdefault("metrics", run_time_dict)
+                exec_info_dict.setdefault("secnario", SysbenchActions.sa_get_scenario_info())
+            
+            if CommonActions.tool == util.TPCCMYSQL:
+                exec_info_dict.setdefault("threads", CommonActions.connection)
+                exec_info_dict.setdefault("warehouse_couunts", CommonActions.warehouse)
+                
+                run_time_dict.setdefault("metric", "Execution time")
+                run_time_dict.setdefault("value", int(CommonActions.measuretime))
+                run_time_dict.setdefault("unit", "Seconds")
+                
+                run_time_dict.setdefault("metric", "Rampup time")
+                run_time_dict.setdefault("value", int(CommonActions.rampuptime))
+                run_time_dict.setdefault("unit", "Seconds")
+                
+                exec_info_dict.setdefault("metric", run_time_dict)
+                exec_info_dict.setdefault("scenario", TpccmysqlActions.ta_get_scenario_info())
+            
+            additional_info["run_info"] = exec_info_dict
+            
+            return additional_info
+            
+        except Exception as e:
+            log.error(e)
     
     
     
