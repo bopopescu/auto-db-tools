@@ -156,6 +156,23 @@ class CommonActions(object):
             log.error(e)
     
     @classmethod
+    def ca_get_cmds_list(cls, cmd_action, cfg_file):
+        try:
+            cmd_list = []
+            CommonActions.ca_parse_config_params(cfg_file) # get basic settings from config file
+            CommonActions.db_version = CommonActions.__coma_get_mysql_version() # get mysql database relase version
+            
+            if CommonActions.tool == util.SYSBENCH:
+                cmd_list.append(SysbenchActions.sa_get_cmds(cmd_action))
+            elif CommonActions.tool == util.TPCCMYSQL:
+                cmd_list.append(TpccmysqlActions.ta_get_cmds(cmd_action))
+            
+            return cmd_list
+        
+        except Exception as e:
+            log.error(e)
+                
+    @classmethod
     def ca_exec_cmds(cls, cmd_str):
         cmd = shlex.split(cmd_str)
         p = subprocess.Popen(cmd, bufsize=-1, stdin=PIPE, stdout=PIPE, stderr=PIPE)
