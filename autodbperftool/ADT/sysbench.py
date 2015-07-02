@@ -69,3 +69,6 @@ class SysbenchActions(object):
     def sa_get_scenario_info(cls):
         pass
 
+    @classmethod
+    def sa_save_results(cls, result):
+        pass
