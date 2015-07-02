@@ -186,7 +186,61 @@ class CommonActions(object):
             cmd_result.append(cmd_line)
             
         return ''.join(cmd_result)
+    
+    @classmethod
+    def ca_create_file_with_timestamp(cls, file_extension):
+        try:
+            file_name = []
+            time_tag = time.strftime("%Y-%m-%d_%H%M", time.localtime())
+            
+            file_name.append(CommonActions.provider + '@' + CommonActions.host)
+            file_name.apoend(CommonActions.tool)
+            file_name.append(CommonActions.threads + 'threads')
+            file_name.append(CommonActions.max_time + 's')
+            file_name.append(CommonActions.tables_count + 't')
+            file_name.append(CommonActions.percentile + '%')
+            file_name.append(time_tag + '.' + file_extension)
+            return '_'.join(file_name)
+        except Exception as e:
+            log.error(e)
+    
+    @classmethod
+    def ca_get_extra_info(cls):
+        try:
+            extra_dict = {
+                            "provider": None,
+                            "test": None,
+                            "run_info": None
+                          }
+            
+            extra_dict["provider"] = CommonActions.provider
+            extra_dict["test"]     = CommonActions.tool
+            
+            run_info_dict  = {}
+            exec_time_dict = {}
+            
+            run_info_dict.setdefault("host_name", CommonActions.host)
+            run_info_dict.setdefault("db_name", CommonActions.db)
+            run_info_dict.setdefault("port", CommonActions.port)
+            run_info_dict.setdefault("owner", CommonActions.user)
+            run_info_dict.setdefault("instance_type", CommonActions.instance_type)
+            run_info_dict.setdefault("db_version", CommonActions.db_version)
+            run_info_dict.setdefault("db_setup", CommonActions.db_setup)
+            
+            if CommonActions.tool == util.SYSBENCH:
+                pass
+            
+            elif CommonActions.tool == util.TPCCMYSQL:
+                pass
+            
+            extra_dict["run_info"] == run_info_dict
+            
+            return extra_dict
         
+        except Exception as e:
+            log.error(e)
+            
+            
     @classmethod
     def __coma_combine_cmds(cls, *params):
         try:
