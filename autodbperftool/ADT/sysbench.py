@@ -5,6 +5,9 @@ Created on 2015-06-18
 
 @author: mizhon
 '''
+import os
+import json
+
 from Utility import util
 from Utility.util import SysbenchUtility as su
 from common import CommonActions
@@ -66,9 +69,36 @@ class SysbenchActions(object):
             log.error(e)
 
     @classmethod
+    def sa_save_results(cls, result):
+        sb_json_result = SysbenchActions.__sa_get_json_results(result)
+        
+        "Abstract and save results in JSON format"
+        json_file = CommonActions.ca_create_file_with_timestamp("json")
+        json_file_path = os.path.join(CommonActions.RESULT_FOLDER, json_file)
+        
+        jf = open(json_file_path, 'w')
+        jf.write(json.dumps(sb_json_result))
+        jf.close()
+        
+    @classmethod
+    def __sa_get_json_results(cls, sb_str):
+        try:
+            result = {
+                        "status": 1,
+                        "metrics": [],
+                        "extra_data": {}
+                     }
+            tps_dict = {}
+            qps_dict = {}
+            rt_dict  = {}
+            
+            #extra_dict = CommonActions.ca
+        
+        except Exception as e:
+            log.error(e)  
+            
+    @classmethod
     def sa_get_scenario_info(cls):
         pass
+    
 
-    @classmethod
-    def sa_save_results(cls, result):
-        pass
