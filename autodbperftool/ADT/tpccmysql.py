@@ -29,10 +29,11 @@ class TpccmysqlActions(object):
             log.error(e)
     
     @classmethod
+    def ta_save_results(cls, result):
+        pass
+
+    @classmethod
     def ta_get_scenario_info(cls):
         pass
     
-    @classmethod
-    def ta_save_results(cls, result):
-        pass
     
