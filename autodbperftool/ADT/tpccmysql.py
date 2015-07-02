@@ -31,3 +31,8 @@ class TpccmysqlActions(object):
     @classmethod
     def ta_get_scenario_info(cls):
         pass
+    
+    @classmethod
+    def ta_save_results(cls, result):
+        pass
+    
