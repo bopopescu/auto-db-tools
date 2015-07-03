@@ -8,13 +8,9 @@ Created on 2015-07-02
 '''
 
 import os
-import time
 import subprocess
 
 from ADT.common import CommonActions
-from ADT.sysbench import SysbenchActions
-from ADT.tpccmysql import TpccmysqlActions
-from Utility import util
 
 from Logs import logger
 
@@ -28,12 +24,16 @@ def main():
         action = args_tpl[0]
         cfg_file_list = args_tpl[1]
         
+        print action
+        print cfg_file_list
+        
         if os.path.exists(CommonActions.RESULT_FOLDER):
             pass
         else:
             p = subprocess.Popen("mkdir", "-p", CommonActions.RESULT_FOLDER)
             p.wait()
         
+        """
         for cfg_file in cfg_file_list:
             cmd_list = CommonActions.ca_get_cmds_list(action, cfg_file) 
             
@@ -49,7 +49,7 @@ def main():
                 'If more than one commands, sleep between each execution'
                 if len(cmd_list) > 1:
                     time.sleep(util.SLEEP_TIME)
-        
+        """
         exit(0)
         
     except Exception as e:

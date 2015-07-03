@@ -233,7 +233,7 @@ class CommonActions(object):
             elif CommonActions.tool == util.TPCCMYSQL:
                 pass
             
-            extra_dict["run_info"] == run_info_dict
+            extra_dict["run_info"] = run_info_dict
             
             return extra_dict
         
