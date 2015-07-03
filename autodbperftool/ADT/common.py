@@ -16,6 +16,7 @@ from subprocess import PIPE
 from Utility import util
 
 from Logs import logger
+from argparse import Action
 log = logger.Log()
 
 
@@ -105,6 +106,9 @@ class CommonActions(object):
                     else:
                         content_error = item[0]
                         log.error("No value detected for param: '%s', please input -h/--help for usage." % content_error)
+            
+            print action
+            print config_file_list
             
             return (action, config_file_list)
         except Exception as e:
