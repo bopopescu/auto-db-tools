@@ -20,7 +20,10 @@ log = logger.Log()
 def main():
     try:
         console_args = CommonActions.ca_receive_console_args()
+        print console_args
+        
         args_tpl = CommonActions.ca_get_console_args(console_args)
+        print args_tpl
         
         action = args_tpl[0]
         cfg_file_list = args_tpl[1]
