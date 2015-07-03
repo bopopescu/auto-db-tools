@@ -16,8 +16,6 @@ from subprocess import PIPE
 from Utility import util
 
 from Logs import logger
-from ADT.sysbench import SysbenchActions
-from ADT.tpccmysql import TpccmysqlActions
 log = logger.Log()
 
 
@@ -163,9 +161,11 @@ class CommonActions(object):
             CommonActions.db_version = CommonActions.__coma_get_mysql_version() # get mysql database relase version
             
             if CommonActions.tool == util.SYSBENCH:
-                cmd_list.append(SysbenchActions.sa_get_cmds(cmd_action))
+                #cmd_list.append(SysbenchActions.sa_get_cmds(cmd_action))
+                pass
             elif CommonActions.tool == util.TPCCMYSQL:
-                cmd_list.append(TpccmysqlActions.ta_get_cmds(cmd_action))
+                #cmd_list.append(TpccmysqlActions.ta_get_cmds(cmd_action))
+                pass
             
             return cmd_list
         
@@ -303,7 +303,7 @@ class CommonActions(object):
                 exec_info_dict.setdefault("unit", "Seconds")
                 
                 exec_info_dict.setdefault("metrics", run_time_dict)
-                exec_info_dict.setdefault("secnario", SysbenchActions.sa_get_scenario_info())
+                #exec_info_dict.setdefault("secnario", SysbenchActions.sa_get_scenario_info())
             
             if CommonActions.tool == util.TPCCMYSQL:
                 exec_info_dict.setdefault("threads", CommonActions.connection)
@@ -318,7 +318,7 @@ class CommonActions(object):
                 run_time_dict.setdefault("unit", "Seconds")
                 
                 exec_info_dict.setdefault("metric", run_time_dict)
-                exec_info_dict.setdefault("scenario", TpccmysqlActions.ta_get_scenario_info())
+                #exec_info_dict.setdefault("scenario", TpccmysqlActions.ta_get_scenario_info())
             
             additional_info["run_info"] = exec_info_dict
             
