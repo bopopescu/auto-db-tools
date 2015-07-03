@@ -16,7 +16,7 @@ from subprocess import PIPE
 from Utility import util
 
 from Logs import logger
-from argparse import Action
+
 log = logger.Log()
 
 
@@ -85,35 +85,50 @@ class CommonActions(object):
             action = None
             config_file_list = []
             
-            for item in dict_args.item():
-                if item[0] =='action':
-                    if item[1] is not None:
-                        if item[1] == 'prepare' or item[1] == 'run' or item[1] =='cleanup':
-                            action = item[1]
+            args_list = dict_args.items()
+            for arg in args_list:
+                     
+                if arg[0] =='action':
+                    if arg[1] is not None:
+                        if arg[1] == 'prepare' or arg[1] == 'run' or arg[1] =='cleanup':
+                            action = arg[1]
                         else:
-                            log.error("Invalid value detected for action: '%s', please choose action in 'prepare/run/cleanup'." % item[1])
+                            log.error("Invalid value detected for action: '%s', please choose action in 'prepare/run/cleanup'." % arg[1])
                     else:
-                        content_error = item[0]
+                        content_error = arg[0]
                         log.error("No value detected for param: '%s', please input -h/--help for usage." % content_error)
-                elif item[0] == 'config':
-                    if item[1] is not None:
-                        config = item[1]
+                elif arg[0] == 'config':
+                    if arg[1] is not None:
+                        config = arg[1]
                         if os.path.exists(config):
-                            config_file_list = CommonActions._ca_get_config_file_list(config)
+                            config_file_list = CommonActions.ca_get_config_list(config)
                         else:
-                            content_error = item[1]
-                            log.error("Invalid config file: '%s', please check the config file is exist." % item[1])
+                            content_error = arg[1]
+                            log.error("Invalid config file: '%s', please check the config file is exist." % arg[1])
                     else:
-                        content_error = item[0]
+                        content_error = arg[0]
                         log.error("No value detected for param: '%s', please input -h/--help for usage." % content_error)
-            
-            print action
-            print config_file_list
             
             return (action, config_file_list)
         except Exception as e:
             log.error(e)
-
+    
+    @classmethod
+    def ca_get_config_list(cls, config_path):
+        try:
+            config_list = []
+            if os.path.isfile(config_path):
+                if os.path.splitext(config_path)[1] == '.cfg':
+                    config_list.append(config_path)
+            elif os.path.isdir(config_path):
+                for config_file in os.listdir(config_path):
+                    file_path = os.path.join(config_path, config_file)
+                    if os.path.splitext(file_path)[1] == '.cfg':
+                        config_list.append(file_path)
+            return config_list
+        except Exception as e:
+            log.error(e)
+        
     @classmethod
     def ca_parse_config_params(cls, cfg_file):
         try:
@@ -160,7 +175,7 @@ class CommonActions(object):
         try:
             cmd_list = []
             CommonActions.ca_parse_config_params(cfg_file) # get basic settings from config file
-            CommonActions.db_version = CommonActions.__coma_get_mysql_version() # get mysql database relase version
+            CommonActions.db_version = CommonActions.ca_get_mysql_version() # get mysql database relase version
             
             if CommonActions.tool == util.SYSBENCH:
                 #cmd_list.append(SysbenchActions.sa_get_cmds(cmd_action))
@@ -241,10 +256,9 @@ class CommonActions(object):
         
         except Exception as e:
             log.error(e)
-            
-            
+                    
     @classmethod
-    def __coma_combine_cmds(cls, *params):
+    def ca_combine_cmds(cls, *params):
         try:
             flag = " "
             param_list = []
@@ -257,8 +271,8 @@ class CommonActions(object):
             log.error(e)
             
     @classmethod
-    def __coma_get_mysql_version(cls):
-        str_chk_mysql_ver = CommonActions.__coma_combine_cmds(util.DB_MYSQL,
+    def ca_get_mysql_version(cls):
+        str_chk_mysql_ver = CommonActions.ca_combine_cmds(util.DB_MYSQL,
                                                           "".join(["-h", CommonActions.tool]),
                                                           "".join(["-u", CommonActions.user]),
                                                           "".join(["-p", CommonActions.password]),
@@ -273,65 +287,7 @@ class CommonActions(object):
         mysql_version = ''.join(re.findall(r"\d\.\d\.\d+-\w+", mysql_ver_info[0], re.M))
         
         return mysql_version
-    
-    @classmethod
-    def __coma_get_additional_info(cls):
-        try:
-            additional_info = {"provider": None, "test": None, "run_info": {}}
-            
-            additional_info["provider"] = CommonActions.provider
-            additional_info["test"] = CommonActions.tool
-            
-            exec_info_dict = {} # get performance execution parameters.
-            run_time_dict = {} # get performance tool execution duration.
-            
-            exec_info_dict.setdefault("host_name", CommonActions.host)
-            exec_info_dict.setdefault("db_name", CommonActions.db)
-            exec_info_dict.setdefault("port", CommonActions.port)
-            exec_info_dict.setdefault("owner", CommonActions.user)
-            exec_info_dict.setdefault("instance_type", CommonActions.instance_type)
-            exec_info_dict.setdefault("db_version", CommonActions.db_version)
-            exec_info_dict.setdefault("db_setup", CommonActions.db_setup)
-            exec_info_dict.setdefault("long_stand", CommonActions.long_stand)
-            
-            if CommonActions.tool == util.SYSBENCH:
-                exec_info_dict.setdefault("threads", CommonActions.threads)
-                exec_info_dict.setdefault("table_counts", CommonActions.tables_count)
-                exec_info_dict.setdefault("table_size", CommonActions.table_size)
-                exec_info_dict.setdefault("percentile", CommonActions.percentile)
-                
-                run_time_dict.setdefault("metric", "Execution time")
-                run_time_dict.setdefault("value", int(CommonActions.max_time))
-                exec_info_dict.setdefault("unit", "Seconds")
-                
-                exec_info_dict.setdefault("metrics", run_time_dict)
-                #exec_info_dict.setdefault("secnario", SysbenchActions.sa_get_scenario_info())
-            
-            if CommonActions.tool == util.TPCCMYSQL:
-                exec_info_dict.setdefault("threads", CommonActions.connection)
-                exec_info_dict.setdefault("warehouse_couunts", CommonActions.warehouse)
-                
-                run_time_dict.setdefault("metric", "Execution time")
-                run_time_dict.setdefault("value", int(CommonActions.measuretime))
-                run_time_dict.setdefault("unit", "Seconds")
-                
-                run_time_dict.setdefault("metric", "Rampup time")
-                run_time_dict.setdefault("value", int(CommonActions.rampuptime))
-                run_time_dict.setdefault("unit", "Seconds")
-                
-                exec_info_dict.setdefault("metric", run_time_dict)
-                #exec_info_dict.setdefault("scenario", TpccmysqlActions.ta_get_scenario_info())
-            
-            additional_info["run_info"] = exec_info_dict
-            
-            return additional_info
-            
-        except Exception as e:
-            log.error(e)
-    
-    
-    
-    
+ 
     
     
     
