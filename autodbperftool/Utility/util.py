@@ -22,6 +22,9 @@ DB_MSSQL  = "mssql" # plan to support this
 
 SLEEP_TIME = 60 # sleep time between each command execution
 
+RESULT_FOLDER = "/tmp/AutoDBPerfTool/" # indicate the result save path on LINUX.
+
+
 """sysbench settings"""
 class SysbenchUtility(object):
     LUA_SCRIPT = "--test="
