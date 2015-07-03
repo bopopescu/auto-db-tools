@@ -11,6 +11,7 @@ import os
 import subprocess
 
 from ADT.common import CommonActions
+from Utility import util
 
 from Logs import logger
 
@@ -27,10 +28,10 @@ def main():
         print action
         print cfg_file_list
         
-        if os.path.exists(CommonActions.RESULT_FOLDER):
+        if os.path.exists(util.RESULT_FOLDER):
             pass
         else:
-            p = subprocess.Popen("mkdir", "-p", CommonActions.RESULT_FOLDER)
+            p = subprocess.Popen("mkdir", "-p", util.RESULT_FOLDER)
             p.wait()
         
         """

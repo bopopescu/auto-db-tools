@@ -54,9 +54,7 @@ class CommonActions(object):
     rampuptime    = None
     measuretime   = None
     intervaltime  = None
-    
-    RESULT_FOLDER = "/tmp/AutoDBPerfTool/" # indicate the result save path on LINUX.
-    
+        
     @classmethod
     def ca_receive_console_args(cls):
         parser = argparse.ArgumentParser(prog="AutoDBPerfTool",
