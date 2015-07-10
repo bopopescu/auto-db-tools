@@ -59,7 +59,7 @@ class CommonActions(object):
     intervaltime  = None
         
     @classmethod
-    def ca_receive_console_args(cls):
+    def coma_receive_console_args(cls):
         parser = argparse.ArgumentParser(prog="AutoDBPerfTool",
                                          formatter_class=argparse.RawDescriptionHelpFormatter,
                                          description=textwrap.dedent('''
@@ -80,7 +80,7 @@ class CommonActions(object):
         return args
     
     @classmethod
-    def ca_get_console_args(cls, console_args):
+    def coma_get_console_args(cls, console_args):
         try:
             dict_args = vars(console_args)
             
@@ -116,7 +116,7 @@ class CommonActions(object):
             log.error(e)
     
     @classmethod
-    def ca_get_config_list(cls, config_path):
+    def coma_get_config_list(cls, config_path):
         try:
             config_list = []
             if os.path.isfile(config_path):
@@ -132,7 +132,7 @@ class CommonActions(object):
             log.error(e)
         
     @classmethod
-    def ca_parse_config_params(cls, cfg_file):
+    def coma_parse_config_params(cls, cfg_file):
         try:
             config = ConfigParser.RawConfigParser()
             config.read(cfg_file)
@@ -173,7 +173,7 @@ class CommonActions(object):
             log.error(e)
     
     @classmethod
-    def ca_get_cmds_list(cls, cmd_action, cfg_file):
+    def coma_get_cmds_list(cls, cmd_action, cfg_file):
         try:
             cmd_list = []
             CommonActions.ca_parse_config_params(cfg_file) # get basic settings from config file
@@ -192,7 +192,7 @@ class CommonActions(object):
             log.error(e)
                 
     @classmethod
-    def ca_exec_cmds(cls, cmd_str):
+    def coma_exec_cmds(cls, cmd_str):
         cmd = shlex.split(cmd_str)
         p = subprocess.Popen(cmd, bufsize=-1, stdin=PIPE, stdout=PIPE, stderr=PIPE)
         p.wait()
@@ -207,7 +207,7 @@ class CommonActions(object):
         return ''.join(cmd_result)
     
     @classmethod
-    def ca_create_file_with_timestamp(cls, file_extension):
+    def coma_create_file_with_timestamp(cls, file_extension):
         try:
             file_name = []
             time_tag = time.strftime("%Y-%m-%d_%H%M", time.localtime())
@@ -224,7 +224,7 @@ class CommonActions(object):
             log.error(e)
     
     @classmethod
-    def ca_get_extra_info(cls):
+    def coma_get_extra_info(cls):
         try:
             extra_dict = {
                             "provider": None,
@@ -260,7 +260,7 @@ class CommonActions(object):
             log.error(e)
                     
     @classmethod
-    def ca_combine_cmds(cls, *params):
+    def cmoa_combine_cmds(cls, *params):
         try:
             flag = " "
             param_list = []
@@ -273,7 +273,7 @@ class CommonActions(object):
             log.error(e)
             
     @classmethod
-    def ca_get_mysql_version(cls):
+    def cmoa_get_mysql_version(cls):
         str_chk_mysql_ver = CommonActions.ca_combine_cmds(util.DB_MYSQL,
                                                           "".join(["-h", CommonActions.tool]),
                                                           "".join(["-u", CommonActions.user]),
