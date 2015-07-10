@@ -80,7 +80,7 @@ class CommonActions(object):
         return args
     
     @classmethod
-    def coma_get_console_args(cls, console_args):
+    def coma_parse_console_args(cls, console_args):
         try:
             dict_args = vars(console_args)
             
