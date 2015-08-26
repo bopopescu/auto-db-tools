@@ -18,7 +18,6 @@ prepare
 
 
 # A sample tpcc-mysql command
-
 ./tpcc_start -h[database_host_name]
 	     -d[database_name]
 	     -u[user_name]
