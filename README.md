@@ -21,7 +21,7 @@ prepare
 ./tpcc_start -h[database_host_name]
 	     -d[database_name]
 	     -u[user_name]
-         -p[password]
+             -p[password]
 	     -w[warehouse_numbers]
 	     -c[threads_numbers]
 	     -r[rampup_time]
