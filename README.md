@@ -3,7 +3,7 @@ A convenient auto tool for database performance testing, integrate sysbench and 
 The tool can run database performance tools according to related config files, avoid to 
 input a lot of parameters manually.
 
-#A sample sysbench command
+# A sample sysbench command
 sysbench --test=/usr/share/sysbench/tests/db/oltp.lua 
          --oltp-table-size=[table_size] 
          --oltp-tables-count=[table_counts] 
