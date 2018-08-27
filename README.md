@@ -4,7 +4,8 @@ The tool can run database performance tools according to related config files, a
 input a lot of parameters manually.
 
 # A sample sysbench command
-```sysbench --test=/usr/share/sysbench/tests/db/oltp.lua 
+```
+sysbench --test=/usr/share/sysbench/tests/db/oltp.lua 
          --oltp-table-size=[table_size] 
          --oltp-tables-count=[table_counts] 
          --num-threads=[thread_numbers]
