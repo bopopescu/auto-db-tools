@@ -35,7 +35,7 @@ class CommonActions(object):
     password      = None
     instance_type = None # indicate whether the instance is RDS or database on VM host
     db_version    = None # database version, e.g.: mysql5.5, mysql5.6 ...
-    db_setup      = None # including three types: 1.default; 2.high-safety (slave-master); 3.high-performance;
+    db_setup      = None # including three types: 1.default; 2.high-safety (subordinate-main); 3.high-performance;
     long_stand    = None # indicate whether the test is long-stand testing, default is False 
     
     'sysbench params fields'
